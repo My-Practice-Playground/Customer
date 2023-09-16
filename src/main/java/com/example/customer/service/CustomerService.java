@@ -6,5 +6,7 @@ public interface CustomerService {
     Boolean saveCustomer(CustomerRecord record);
 
     Boolean deleteCustomer(String id);
+
+    Boolean updateCustomer(CustomerRecord record);
 }
 

@@ -17,11 +17,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Boolean saveCustomer(CustomerRecord record) {
-        Customer customer = new Customer();
-        customer.setId(record.id());
-        customer.setCity(record.city());
-        customer.setName(record.name());
-        customer.setEmail(record.email());
+        Customer customer = new Customer(record.id(), record.name(), record.city(), record.email());
         customerDao.save(customer);
         return true;
     }
@@ -30,6 +26,14 @@ public class CustomerServiceImpl implements CustomerService {
     public Boolean deleteCustomer(String id) {
         if (!customerDao.existsById(id)) throw new RuntimeException("Customer Not Found!");
         customerDao.deleteById(id);
+        return true;
+    }
+
+    @Override
+    public Boolean updateCustomer(CustomerRecord record) {
+        if (!customerDao.existsById(record.id())) throw new RuntimeException("Customer Not Found!");
+        Customer customer = new Customer(record.id(), record.name(), record.city(), record.email());
+        customerDao.updateCustomer(customer.getName(), customer.getCity(), customer.getEmail(), customer.getId());
         return true;
     }
 }
