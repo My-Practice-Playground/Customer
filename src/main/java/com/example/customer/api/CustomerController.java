@@ -3,10 +3,7 @@ package com.example.customer.api;
 import com.example.customer.dto.CustomerRecord;
 import com.example.customer.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "/api/customer")
@@ -16,15 +13,28 @@ public class CustomerController {
 
     @PostMapping
     String saveCustomer(@RequestBody CustomerRecord customer) {
-        if(customer == null || !customer.name().matches("[A-Za-z ]+")){
+        if (validate(customer)) customerService.saveCustomer(customer);
+        return "Saved!";
+    }
+
+    private boolean validate(CustomerRecord record) {
+        if (record == null || !record.name().matches("[A-Za-z ]+")) {
             throw new RuntimeException("Invalid name!");
-        } else if (customer.email() == null) {
+        } else if (record.email() == null) {
             throw new RuntimeException("Invalid email!");
-        } else if (customer.city() == null) {
+        } else if (record.city() == null) {
             throw new RuntimeException("Invalid city!");
         }
-        customerService.saveCustomer(customer);
-        return "Saved!";
+        return true;
+    }
+
+    @DeleteMapping(params = "id")
+    private boolean deleteCustomer(String id) {
+        if (!id.matches("[a-zA-Z]")) {
+            System.out.println("invalid id!");
+        }
+        customerService.deleteCustomer(id);
+        return true;
     }
 
 

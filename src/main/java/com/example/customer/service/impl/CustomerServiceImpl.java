@@ -23,7 +23,13 @@ public class CustomerServiceImpl implements CustomerService {
         customer.setName(record.name());
         customer.setEmail(record.email());
         customerDao.save(customer);
+        return true;
+    }
 
+    @Override
+    public Boolean deleteCustomer(String id) {
+        if (!customerDao.existsById(id)) throw new RuntimeException("Customer Not Found!");
+        customerDao.deleteById(id);
         return true;
     }
 }
