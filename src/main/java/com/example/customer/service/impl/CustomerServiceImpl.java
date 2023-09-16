@@ -36,4 +36,11 @@ public class CustomerServiceImpl implements CustomerService {
         customerDao.updateCustomer(customer.getName(), customer.getCity(), customer.getEmail(), customer.getId());
         return true;
     }
+
+    @Override
+    public CustomerRecord viewCustomer(String id) {
+        if (!customerDao.existsById(id)) throw new RuntimeException("Customer Not Found!");
+        Customer customer = customerDao.getCustomerById(id);
+        return new CustomerRecord(customer.getId(), customer.getName(), customer.getCity(), customer.getEmail());
+    }
 }

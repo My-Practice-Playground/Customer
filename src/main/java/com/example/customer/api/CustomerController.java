@@ -30,20 +30,25 @@ public class CustomerController {
 
     @DeleteMapping(params = "id")
     private boolean deleteCustomer(String id) {
-        if (!id.matches("[a-zA-Z0-9]")) {
-            System.out.println("invalid id!");
-        }
+        if (!id.matches("[A-Za-z0-9]+")) throw new RuntimeException("Invalid customer id!");
         customerService.deleteCustomer(id);
         return true;
     }
 
     @PutMapping
     private String updateCustomer(@RequestBody CustomerRecord record) {
-        if (!validate(record)) {
-            return "invalid customer details";
-        }
+        if (!validate(record)) return "Invalid customer details!";
         customerService.updateCustomer(record);
         return "Customer updated successfully";
+    }
+
+
+    @GetMapping(params = "id")
+    private String viewCustomer(String id) {
+        System.out.println(id);
+        if (!id.matches("[A-Za-z0-9]+")) throw new RuntimeException("Invalid customer id!");
+        CustomerRecord customerRecord = customerService.viewCustomer(id);
+        return customerRecord.toString();
     }
 
 

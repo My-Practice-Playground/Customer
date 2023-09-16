@@ -8,5 +8,7 @@ public interface CustomerService {
     Boolean deleteCustomer(String id);
 
     Boolean updateCustomer(CustomerRecord record);
+
+    CustomerRecord viewCustomer(String id);
 }
 
